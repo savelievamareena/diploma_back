@@ -1,56 +1,59 @@
 package by.iba.diploma_101_back.controller;
 
+import by.iba.diploma_101_back.exception.ResourceNotFoundException;
 import by.iba.diploma_101_back.model.Review;
-
+import by.iba.diploma_101_back.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@RequestMapping(path="/get-reviews")
+@RestController
+@RequestMapping("/api")
 public class ReviewController {
-    private static List<Review> reviews = new ArrayList<>();
+    private final ReviewRepository reviewRepository;
 
-    static {
-        reviews.add(new Review(2, 1, "test text", "2022-10-05"));
-        reviews.add(new Review(3, 1, "test text 2", "2022-10-04"));
+    @Autowired
+    public ReviewController(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
     }
 
-    @Value("${welcome.message}")
-    private String message;
-    @Value("${error.message}")
-    private String errorMessage;
-
-    @RequestMapping(value = {"/", "/get-reviews"}, method = RequestMethod.GET)
-    public ModelAndView index(Model model) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("get-reviews");
-        model.addAttribute("message", message);
-        return modelAndView;
+    @GetMapping("/reviews")
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
     }
 
-    @PostMapping(path="/add") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser (@RequestParam String name
-            , @RequestParam String email) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
-
-        Review review = new Review();
-//        review.setId(id);
-//        n.setEmail(email);
-//        userRepository.save(n);
-        return "Saved";
+    @PostMapping("/reviews")
+    public Review createReview(@RequestBody Review Review) {
+        return reviewRepository.save(Review);
     }
 
-//    @GetMapping(path="/all")
-//    public @ResponseBody Iterable<Review> getAllUsers() {
-//        // This returns a JSON or XML with the users
-//        return userRepository.findAll();
-//    }
+    @GetMapping("/reviews/{id}")
+    public Review getReviewById(@PathVariable(value = "id") int ReviewId) {
+        return reviewRepository.findById(ReviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+    }
+
+    @PutMapping("/reviews/{id}")
+    public Review updateReview(@PathVariable(value = "id") int ReviewId, @RequestBody Review ReviewDetails) {
+
+        Review Review = reviewRepository.findById(ReviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+
+        Review.setReviewText(ReviewDetails.getReviewText());
+        Review.setSender(ReviewDetails.getSender());
+
+        return reviewRepository.save(Review);
+    }
+
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") int ReviewId) {
+        Review Review = reviewRepository.findById(ReviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+
+        reviewRepository.delete(Review);
+
+        return ResponseEntity.ok().build();
+    }
 }
