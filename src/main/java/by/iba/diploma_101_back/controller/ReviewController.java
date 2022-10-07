@@ -25,32 +25,32 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews")
-    public Review createReview(@RequestBody Review Review) {
-        return reviewRepository.save(Review);
+    public Review createReview(@RequestBody Review review) {
+        return reviewRepository.save(review);
     }
 
     @GetMapping("/reviews/{id}")
-    public Review getReviewById(@PathVariable(value = "id") int ReviewId) {
-        return reviewRepository.findById(ReviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+    public Review getReviewById(@PathVariable(value = "id") int reviewId) {
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", reviewId));
     }
 
     @PutMapping("/reviews/{id}")
-    public Review updateReview(@PathVariable(value = "id") int ReviewId, @RequestBody Review ReviewDetails) {
+    public Review updateReview(@PathVariable(value = "id") int reviewId, @RequestBody Review reviewDetails) {
 
-        Review Review = reviewRepository.findById(ReviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", reviewId));
 
-        Review.setReviewText(ReviewDetails.getReviewText());
-        Review.setSender(ReviewDetails.getSender());
+        review.setReviewText(reviewDetails.getReviewText());
+        review.setSender(reviewDetails.getSender());
 
-        return reviewRepository.save(Review);
+        return reviewRepository.save(review);
     }
 
     @DeleteMapping("/reviews/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") int ReviewId) {
-        Review Review = reviewRepository.findById(ReviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", ReviewId));
+    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") int reviewId) {
+        Review Review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review", "id", reviewId));
 
         reviewRepository.delete(Review);
 
