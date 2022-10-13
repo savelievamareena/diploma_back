@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
+@CrossOrigin
 public class ReviewController {
     private final ReviewRepository reviewRepository;
 

@@ -18,7 +18,7 @@ public class User {
     @Column
     private int id;
 
-    @Column(name="email")
+    @Column(name="email", unique=true)
     private String email;
 
     @Column(name="password")
@@ -39,14 +39,18 @@ public class User {
     @Column(name="lastName")
     private String lastName;
 
-    @Column(name="isAdmin")
-    private boolean isAdmin;
+    @Column(name="role")
+    private String role;
 
     @Column(nullable = false, updatable = false, name="createdAt")
     @CreatedDate
     private String createdAt;
 
-    public User(String email, String password, String phoneNumber, String identificationNumber, String dateOfBirth, String firstName, String lastName, boolean isAdmin, String createdAt) {
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private Doctor doctor;
+
+    public User(String email, String password, String phoneNumber, String identificationNumber, String dateOfBirth, String firstName, String lastName, String role, String createdAt) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -54,7 +58,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.isAdmin = isAdmin;
+        this.role = role;
         this.createdAt = createdAt;
     }
 
@@ -90,8 +94,8 @@ public class User {
         return lastName;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
     public String getCreatedAt() {
@@ -126,8 +130,8 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRole (String role) {
+        this.role = role;
     }
 
     public void setCreatedAt(String createdAt) {
