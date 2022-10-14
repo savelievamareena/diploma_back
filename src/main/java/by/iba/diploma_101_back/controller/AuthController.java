@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
     String hashingAlgorithm = "MD5";
 
@@ -49,8 +49,8 @@ public class AuthController {
             if(Objects.equals(user.getPassword(), hashedPass)) {
                 Cookie loginCookie = new Cookie("authKey", hashedPass);
                 loginCookie.setMaxAge(7 * 24 * 60 * 60);
+                loginCookie.setPath("/");
                 response.addCookie(loginCookie);
-
             }else {
                 apiResponse.setMessage("Wrong Password");
                 return ResponseEntity
@@ -72,11 +72,4 @@ public class AuthController {
 
         return null;
     }
-
-
-
-
-
-
-
 }
