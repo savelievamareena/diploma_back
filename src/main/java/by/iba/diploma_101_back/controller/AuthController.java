@@ -3,7 +3,6 @@ package by.iba.diploma_101_back.controller;
 import by.iba.diploma_101_back.forms.LoginForm;
 import by.iba.diploma_101_back.forms.RegisterForm;
 import by.iba.diploma_101_back.helpers.ApiResponse;
-import by.iba.diploma_101_back.model.Review;
 import by.iba.diploma_101_back.model.User;
 import by.iba.diploma_101_back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.Objects;
 
 @RestController

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
@@ -38,11 +37,6 @@ public class User extends DataObject{
 
     @Column(name="role")
     private String role;
-
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private Doctor doctor;
-
 
     public String getEmail() {
         return email;

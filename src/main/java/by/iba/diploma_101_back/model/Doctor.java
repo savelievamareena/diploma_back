@@ -1,4 +1,123 @@
 package by.iba.diploma_101_back.model;
 
-public class Doctor {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "doctor")
+public class Doctor extends DataObject{
+
+    @Column(name="firstName")
+    private String firstName;
+
+    @Column(name="lastName")
+    private String lastName;
+
+    @Column(name="education")
+    private String education;
+
+    @Column(name="bio")
+    private String bio;
+
+    @Column(name="isAvailable")
+    private boolean isAvailable;
+
+    @Column(name="fee")
+    private float fee;
+
+    @Column(name="yearsOfExperience")
+    private int yearsOfExperience;
+
+    @Column(name="profilePhotoLink")
+    private String profilePhotoLink;
+
+    @OneToOne
+    @JoinColumn(name="userId", referencedColumnName="id")
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name="specializationId", referencedColumnName="id")
+    private Specialization specialization;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public float getFee() {
+        return fee;
+    }
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public String getProfilePhotoLink() {
+        return profilePhotoLink;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public void setFee(float fee) {
+        this.fee = fee;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public void setProfilePhotoLink(String profilePhotoLink) {
+        this.profilePhotoLink = profilePhotoLink;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }
