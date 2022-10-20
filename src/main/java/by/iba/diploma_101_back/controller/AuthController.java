@@ -41,6 +41,23 @@ public class AuthController {
         return DatatypeConverter.printHexBinary(theMD5digest);
     }
 
+    private static void setCookies(User user, String hashedPass, HttpServletResponse response) {
+        Cookie loginCookie = new Cookie("authKey", hashedPass);
+        loginCookie.setMaxAge(3 * 24 * 60 * 60);
+        loginCookie.setPath("/");
+        response.addCookie(loginCookie);
+
+        Cookie userCookie = new Cookie("role", user.getRole());
+        userCookie.setMaxAge(3 * 24 * 60 * 60);
+        userCookie.setPath("/");
+        response.addCookie(userCookie);
+
+        Cookie idCookie = new Cookie("userId", Integer.toString(user.getId()));
+        idCookie.setMaxAge(3 * 24 * 60 * 60);
+        idCookie.setPath("/");
+        response.addCookie(idCookie);
+    }
+
     @PostMapping("login")
     public ResponseEntity<?> logInFunc(@RequestBody LoginForm loginForm, HttpServletResponse response) throws NoSuchAlgorithmException {
         ApiResponse apiResponse = new ApiResponse();
@@ -51,11 +68,10 @@ public class AuthController {
             String hashedPass = securePass(pass, hashingAlgorithm);
 
             if(Objects.equals(user.getPassword(), hashedPass)) {
-                Cookie loginCookie = new Cookie("authKey", hashedPass);
-                loginCookie.setMaxAge(7 * 24 * 60 * 60);
-                loginCookie.setPath("/");
-                response.addCookie(loginCookie);
+                setCookies(user, hashedPass, response);
+
                 apiResponse.setCookie(hashedPass);
+                apiResponse.setRole(user.getRole());
             }else {
                 apiResponse.setMessage("Wrong Password");
                 return ResponseEntity
@@ -105,13 +121,15 @@ public class AuthController {
             userRepository.save(user);
         } catch (Exception e) {
             apiResponse.setMessage("Error");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
         }
 
-        Cookie loginCookie = new Cookie("authKey", hashedPass);
-        loginCookie.setMaxAge(3 * 24 * 60 * 60);
-        loginCookie.setPath("/");
-        response.addCookie(loginCookie);
+        setCookies(user, hashedPass, response);
+
         apiResponse.setCookie(hashedPass);
+        apiResponse.setRole(user.getRole());
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
@@ -125,6 +143,17 @@ public class AuthController {
             loginCookie.setMaxAge(0);
             loginCookie.setPath("/");
             response.addCookie(loginCookie);
+
+            Cookie userCookie = new Cookie("role", "0");
+            userCookie.setMaxAge(0);
+            userCookie.setPath("/");
+            response.addCookie(userCookie);
+
+            Cookie idCookie = new Cookie("userId", "0");
+            idCookie.setMaxAge(0);
+            idCookie.setPath("/");
+            response.addCookie(idCookie);
+
         } catch (Exception e) {
             apiResponse.setMessage("Error");
         }
