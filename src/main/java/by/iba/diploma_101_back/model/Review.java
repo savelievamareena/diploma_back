@@ -18,8 +18,9 @@ import javax.persistence.*;
 @Table(name = "review")
 public class Review extends DataObject{
 
-    @Column(name="doctorId")
-    private Integer doctorId;
+    @ManyToOne
+    @JoinColumn(name="doctorId", referencedColumnName="id")
+    private Doctor doctor;
 
     @Column(name="reviewText")
     private String reviewText;
@@ -27,7 +28,10 @@ public class Review extends DataObject{
     @Column(name="sender")
     private String sender;
 
-    public void setDoctorId(Integer doctorId) {this.doctorId = doctorId;}
+    @Column(name="createdAt")
+    protected String createdAt;
+
+    public void setDoctor(Doctor doctor) {this.doctor = doctor;}
 
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
@@ -35,13 +39,21 @@ public class Review extends DataObject{
 
     public void setSender(String sender) {this.sender = sender;}
 
-    public Integer getDoctorId() {
-        return doctorId;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
     public String getSender() {return sender;}
 
     public String getReviewText() {
         return reviewText;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

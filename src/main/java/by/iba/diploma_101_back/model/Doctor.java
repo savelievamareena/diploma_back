@@ -1,7 +1,6 @@
 package by.iba.diploma_101_back.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
@@ -38,12 +36,15 @@ public class Doctor extends DataObject{
     @Column(name="yearsOfExperience")
     private int yearsOfExperience;
 
+    @Column(name="category")
+    private String category;
+
     @Column(name="profilePhotoLink")
     private String profilePhotoLink;
 
-    @OneToOne
-    @JoinColumn(name="userId", referencedColumnName="id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name="userId", referencedColumnName="id")
+//    private User user;
 
     @OneToOne
     @JoinColumn(name="specializationId", referencedColumnName="id")
@@ -77,13 +78,21 @@ public class Doctor extends DataObject{
         return yearsOfExperience;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
     public String getProfilePhotoLink() {
         return profilePhotoLink;
     }
 
-    public User getUser() {
-        return user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -119,5 +128,17 @@ public class Doctor extends DataObject{
 
     public String getFullName() {
         return this.firstName + " " + this.lastName;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 }

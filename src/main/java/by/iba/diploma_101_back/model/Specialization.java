@@ -22,4 +22,20 @@ public class Specialization extends DataObject{
     @ManyToOne
     @JoinColumn(name = "departmentId")
     private Department department;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 }

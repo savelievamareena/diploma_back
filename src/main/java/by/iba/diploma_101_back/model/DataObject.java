@@ -10,18 +10,7 @@ public abstract class DataObject implements Serializable {
     @Column(name = "id")
     protected int id;
 
-    @Column(name="createdAt")
-    protected String createdAt;
-
     public int getId() {
         return id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 }

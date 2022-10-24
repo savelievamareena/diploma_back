@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
-    Doctor findByUserId(int userId);
+    Doctor findBySpecializationId(int specializationId);
 }

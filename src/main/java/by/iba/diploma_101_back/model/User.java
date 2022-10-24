@@ -38,6 +38,9 @@ public class User extends DataObject{
     @Column(name="role")
     private String role;
 
+    @Column(name="createdAt")
+    protected String createdAt;
+
     public String getEmail() {
         return email;
     }
@@ -92,5 +95,13 @@ public class User extends DataObject{
 
     public void setRole (String role) {
         this.role = role;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }
