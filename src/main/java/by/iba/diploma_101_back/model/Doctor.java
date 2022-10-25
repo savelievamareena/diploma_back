@@ -42,10 +42,6 @@ public class Doctor extends DataObject{
     @Column(name="profilePhotoLink")
     private String profilePhotoLink;
 
-//    @OneToOne
-//    @JoinColumn(name="userId", referencedColumnName="id")
-//    private User user;
-
     @OneToOne
     @JoinColumn(name="specializationId", referencedColumnName="id")
     private Specialization specialization;

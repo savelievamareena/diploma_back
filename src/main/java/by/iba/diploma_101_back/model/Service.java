@@ -29,6 +29,9 @@ public class Service extends DataObject{
     @Column(name="duration")
     private String duration;
 
+    @Column(name="description")
+    private String description;
+
     public String getTitle() {
         return title;
     }
@@ -45,6 +48,11 @@ public class Service extends DataObject{
         return duration;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -59,5 +67,9 @@ public class Service extends DataObject{
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -8,7 +8,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,6 +23,9 @@ import javax.persistence.Table;
 public class Department extends DataObject{
     @Column(name="title")
     private String title;
+
+//    @OneToMany(mappedBy="department")
+//    private List<Specialization> items = new ArrayList<>();
 
     public String getTitle() {
         return title;
