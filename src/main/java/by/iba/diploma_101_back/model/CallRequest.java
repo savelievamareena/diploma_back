@@ -25,6 +25,9 @@ public class CallRequest extends DataObject{
     @Column(name = "question")
     private String question;
 
+    @Column(name = "isCalled")
+    private boolean isCalled;
+
     @Column(name="createdAt")
     protected String createdAt;
 
