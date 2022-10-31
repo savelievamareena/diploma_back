@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api")
@@ -47,15 +48,19 @@ public class UserController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
+        if(!Objects.equals(user.getEmail(), userDetails.getEmail())) {
+            user.setEmail(userDetails.getEmail());
+        }
+
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setEmail(userDetails.getEmail());
         user.setPhoneNumber(userDetails.getPhoneNumber());
+        user.setDateOfBirth(userDetails.getDateOfBirth());
 
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            apiResponse.setMessage("Email already Exists");
+            apiResponse.setMessage("Something went wrong");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);

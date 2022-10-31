@@ -4,6 +4,7 @@ public class RegisterForm {
     String firstName = "";
     String lastName = "";
     String email = "";
+    String dateOfBirth = "";
     String phoneNumber = "";
     String password = "";
     String confirmPassword = "";
@@ -18,6 +19,10 @@ public class RegisterForm {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public String getPhoneNumber() {
@@ -42,6 +47,10 @@ public class RegisterForm {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public void setPhoneNumber(String phoneNumber) {

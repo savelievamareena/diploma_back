@@ -108,6 +108,7 @@ public class AuthController {
 
         User user = new User();
         user.setEmail(registerForm.getEmail());
+        user.setDateOfBirth(registerForm.getDateOfBirth());
         user.setFirstName(registerForm.getFirstName());
         user.setLastName(registerForm.getLastName());
         user.setPhoneNumber(registerForm.getPhoneNumber());
