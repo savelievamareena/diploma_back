@@ -52,7 +52,6 @@ public class Service extends DataObject{
         return description;
     }
 
-
     public void setTitle(String title) {
         this.title = title;
     }

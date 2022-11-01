@@ -28,7 +28,7 @@ public class Doctor extends DataObject{
     private String bio;
 
     @Column(name="isAvailable")
-    private boolean isAvailable;
+    private boolean available;
 
     @Column(name="fee")
     private float fee;
@@ -63,7 +63,7 @@ public class Doctor extends DataObject{
     }
 
     public boolean isAvailable() {
-        return isAvailable;
+        return available;
     }
 
     public float getFee() {
@@ -86,10 +86,6 @@ public class Doctor extends DataObject{
         return profilePhotoLink;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -106,8 +102,8 @@ public class Doctor extends DataObject{
         this.bio = bio;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setIsAvailable(boolean available) {
+        this.available = available;
     }
 
     public void setFee(float fee) {
@@ -129,10 +125,6 @@ public class Doctor extends DataObject{
     public void setCategory(String category) {
         this.category = category;
     }
-
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
 
     public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;

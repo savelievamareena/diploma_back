@@ -1,13 +1,18 @@
 package by.iba.diploma_101_back.controller;
 
+import by.iba.diploma_101_back.exception.ResourceNotFoundException;
+import by.iba.diploma_101_back.forms.DoctorForm;
+import by.iba.diploma_101_back.helpers.ApiResponse;
 import by.iba.diploma_101_back.model.Doctor;
+import by.iba.diploma_101_back.model.Specialization;
 import by.iba.diploma_101_back.repository.DoctorRepository;
+import by.iba.diploma_101_back.repository.SpecializationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -15,10 +20,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class DoctorController {
     private final DoctorRepository doctorRepository;
+    private final SpecializationRepository specializationRepository;
 
     @Autowired
-    public DoctorController(DoctorRepository doctorRepository) {
+    public DoctorController(DoctorRepository doctorRepository, SpecializationRepository specializationRepository) {
         this.doctorRepository = doctorRepository;
+        this.specializationRepository = specializationRepository;
     }
 
     @GetMapping("/doctors")
@@ -26,4 +33,59 @@ public class DoctorController {
         return doctorRepository.findAll();
     }
 
+    @PostMapping("/doctors/{id}")
+    public ResponseEntity<?> updateDoctor(@PathVariable(value = "id") int doctorId, @RequestBody DoctorForm doctorDetails, HttpServletResponse response) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        Doctor doctor = new Doctor();
+
+        if(doctorId != 0) {
+            doctor = doctorRepository.findById(doctorId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", doctorId));
+        }
+
+        int specializationId = doctorDetails.getSpecializationId();
+
+        Specialization specialization = specializationRepository.findById(specializationId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Specialization", "id", specializationId));
+
+        doctor.setFirstName(doctorDetails.getFirstName());
+        doctor.setLastName(doctorDetails.getLastName());
+        doctor.setBio(doctorDetails.getBio());
+        doctor.setYearsOfExperience(doctorDetails.getYearsOfExperience());
+        doctor.setEducation(doctorDetails.getEducation());
+        doctor.setIsAvailable(doctorDetails.isAvailable());
+        doctor.setFee(doctorDetails.getFee());
+        doctor.setProfilePhotoLink(doctorDetails.getProfilePhotoLink());
+        doctor.setCategory(doctorDetails.getCategory());
+        doctor.setSpecialization(specialization);
+
+        try {
+            doctorRepository.save(doctor);
+        } catch (Exception e) {
+            apiResponse.setMessage("Something went wrong");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        }
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/doctors/{id}")
+    public ResponseEntity<?> deleteDoctor(@PathVariable(value = "id") int id) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", id));
+
+        try{
+            doctorRepository.delete(doctor);
+        }catch (Exception e) {
+            apiResponse.setMessage("Error. Try again later");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        }
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

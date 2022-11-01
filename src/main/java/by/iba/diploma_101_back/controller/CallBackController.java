@@ -52,7 +52,7 @@ public class CallBackController {
     }
 
     @PostMapping("/callback/{id}")
-    public ResponseEntity<?> deleteCallBacKRequest(@PathVariable(value = "id") int id) {
+    public ResponseEntity<?> deleteCallBackRequest(@PathVariable(value = "id") int id) {
         ApiResponse apiResponse = new ApiResponse();
 
         CallRequest callBackRequest = callBackRepository.findById(id)
