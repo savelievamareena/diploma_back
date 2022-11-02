@@ -35,7 +35,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/offers")
-    public List<OfferItemDTO> getTest() {
+    public List<OfferItemDTO> getOffers() {
 
         System.out.println(jdbcTemplate);
         String query = "SELECT service.title as serviceTitle, service.price as price, d.title as departmentTitle FROM service " +

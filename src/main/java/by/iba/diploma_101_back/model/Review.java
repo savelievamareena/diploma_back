@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +27,9 @@ public class Review extends DataObject{
     @Column(name="sender")
     private String sender;
 
+    @Column(name="isShown")
+    private boolean shown;
+
     @Column(name="createdAt")
     protected String createdAt;
 
@@ -38,6 +40,10 @@ public class Review extends DataObject{
     }
 
     public void setSender(String sender) {this.sender = sender;}
+
+    public boolean isShown() {
+        return shown;
+    }
 
     public Doctor getDoctor() {
         return doctor;
@@ -55,5 +61,9 @@ public class Review extends DataObject{
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setShown(boolean shown) {
+        this.shown = shown;
     }
 }
