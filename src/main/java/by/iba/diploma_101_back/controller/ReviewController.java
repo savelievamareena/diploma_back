@@ -23,13 +23,11 @@ import java.util.Optional;
 public class ReviewController {
     private final ReviewRepository reviewRepository;
     private final DoctorRepository doctorRepository;
-    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ReviewController(ReviewRepository reviewRepository, DoctorRepository doctorRepository, JdbcTemplate jdbcTemplate) {
+    public ReviewController(ReviewRepository reviewRepository, DoctorRepository doctorRepository) {
         this.reviewRepository = reviewRepository;
         this.doctorRepository = doctorRepository;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     @GetMapping("/admin/reviews")
@@ -97,7 +95,6 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public List<Review> getApprovedReviews() {
-        String query = "SELECT * FROM review WHERE isShown = 1 ";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Review.class));
+        return reviewRepository.findByIsShown(true);
     }
 }
