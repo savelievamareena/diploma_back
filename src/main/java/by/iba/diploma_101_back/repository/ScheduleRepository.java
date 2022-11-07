@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-//    @Query(value = "SELECT * FROM schedule r LEFT JOIN doctor d on r.doctorId = d.id LEFT JOIN specialization s on d.specializationId = s.id", nativeQuery = true)
-//    List<Schedule> findByIsShown(boolean shown);
+    @Query(value = "" +
+            "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id LEFT JOIN specialization sp on d.specializationId = sp.id ORDER BY s.startTime",
+            nativeQuery = true)
+    List<Schedule> findAllOrdered();
 
 }

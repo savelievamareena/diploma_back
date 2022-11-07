@@ -17,7 +17,7 @@ import java.util.Date;
 @DynamicUpdate
 @Table(name = "schedule")
 public class Schedule extends DataObject{
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
