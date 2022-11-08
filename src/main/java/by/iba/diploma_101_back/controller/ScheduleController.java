@@ -36,8 +36,13 @@ public class ScheduleController {
         return scheduleRepository.findAllOrdered();
     }
 
+    @GetMapping("/schedules/doc/{id}")
+    public List<Schedule> getSchedulesByDoctorId(@PathVariable(value = "id") int doctorId) {
+        return scheduleRepository.findAllByDoc(doctorId);
+    }
+
     @PostMapping("/schedules")
-    public ResponseEntity<?> createReview(@RequestBody ScheduleForm scheduleForm) throws ParseException {
+    public ResponseEntity<?> createSchedule(@RequestBody ScheduleForm scheduleForm) throws ParseException {
         ApiResponse apiResponse = new ApiResponse();
 
         Schedule schedule = new Schedule();

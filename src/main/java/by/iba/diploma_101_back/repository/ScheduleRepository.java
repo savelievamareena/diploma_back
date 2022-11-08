@@ -16,4 +16,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             nativeQuery = true)
     List<Schedule> findAllOrdered();
 
+    @Query(value = "" +
+            "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id WHERE d.id = ?1 ORDER BY s.startTime",
+            nativeQuery = true)
+    List<Schedule> findAllByDoc(int doctorId);
+
 }

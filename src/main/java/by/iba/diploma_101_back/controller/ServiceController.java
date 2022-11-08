@@ -3,10 +3,7 @@ package by.iba.diploma_101_back.controller;
 import by.iba.diploma_101_back.model.Service;
 import by.iba.diploma_101_back.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,12 @@ public class ServiceController {
     }
 
     @GetMapping("/services")
-    public List<Service> getAllSpecializations() {
+    public List<Service> getAllServices() {
         return serviceRepository.findAll();
+    }
+
+    @GetMapping("/services/spec/{id}")
+    public List<Service> getAllServicesBySpecId(@PathVariable(value = "id") int specId) {
+        return serviceRepository.findAllBySpecId(specId);
     }
 }

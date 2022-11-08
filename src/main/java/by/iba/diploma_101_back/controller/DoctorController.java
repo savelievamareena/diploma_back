@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +32,16 @@ public class DoctorController {
     @GetMapping("/doctors")
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
+    }
+
+    @GetMapping("/doctors/{id}")
+    public Optional<Doctor> getAllDoctors(@PathVariable(value = "id") int id) {
+        return doctorRepository.findById(id);
+    }
+
+    @GetMapping("/doctors/spec/{id}")
+    public List<Doctor> getDoctorsBySpecialization(@PathVariable(value = "id") int specId) {
+        return doctorRepository.findBySpecializationId(specId);
     }
 
     @PostMapping("/doctors/{id}")
