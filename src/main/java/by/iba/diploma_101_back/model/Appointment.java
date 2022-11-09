@@ -23,11 +23,11 @@ public class Appointment extends DataObject{
 
     @ManyToOne
     @JoinColumn(name = "scheduleId")
-    private Schedule scheduleId;
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "serviceId")
-    private Service serviceId;
+    private Service service;
 
     @Column(name = "beginning")
     private String beginning;
@@ -36,12 +36,12 @@ public class Appointment extends DataObject{
         return user;
     }
 
-    public Schedule getScheduleId() {
-        return scheduleId;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
-    public Service getServiceId() {
-        return serviceId;
+    public Service getService() {
+        return service;
     }
 
     public String getBeginning() {
@@ -52,12 +52,12 @@ public class Appointment extends DataObject{
         this.user = user;
     }
 
-    public void setScheduleId(Schedule scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
-    public void setServiceId(Service serviceId) {
-        this.serviceId = serviceId;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public void setBeginning(String beginning) {
