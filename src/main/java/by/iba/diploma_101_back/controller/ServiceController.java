@@ -27,4 +27,9 @@ public class ServiceController {
     public List<Service> getAllServicesBySpecId(@PathVariable(value = "id") int specId) {
         return serviceRepository.findAllBySpecId(specId);
     }
+
+    @GetMapping("/services/{id}")
+    public List<Service> getOffersByDepartment(@PathVariable(value = "id") int departmentId) {
+        return serviceRepository.findAllByDepartmentId(departmentId);
+    }
 }
