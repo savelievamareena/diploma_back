@@ -2,10 +2,7 @@ package by.iba.diploma_101_back.controller;
 
 import by.iba.diploma_101_back.forms.AppointmentForm;
 import by.iba.diploma_101_back.helpers.ApiResponse;
-import by.iba.diploma_101_back.model.Appointment;
-import by.iba.diploma_101_back.model.Schedule;
-import by.iba.diploma_101_back.model.Service;
-import by.iba.diploma_101_back.model.User;
+import by.iba.diploma_101_back.model.*;
 import by.iba.diploma_101_back.repository.AppointmentRepository;
 import by.iba.diploma_101_back.repository.ScheduleRepository;
 import by.iba.diploma_101_back.repository.ServiceRepository;
@@ -13,6 +10,8 @@ import by.iba.diploma_101_back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,12 +27,26 @@ public class AppointmentController {
     private final ScheduleRepository scheduleRepository;
     private final ServiceRepository serviceRepository;
 
+    java.util.Date dt = new java.util.Date();
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String currentTime = sdf.format(dt);
+
     @Autowired
     public AppointmentController(AppointmentRepository appointmentRepository, UserRepository userRepository, ScheduleRepository scheduleRepository, ServiceRepository serviceRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userRepository = userRepository;
         this.scheduleRepository = scheduleRepository;
         this.serviceRepository = serviceRepository;
+    }
+
+    @GetMapping("/appointments/past")
+    public List<Appointment> getAllPast() {
+        return appointmentRepository.getAllPast(currentTime);
+    }
+
+    @GetMapping("/appointments/active")
+    public List<Appointment> getAllActive() {
+        return appointmentRepository.getAllActive(currentTime);
     }
 
     @GetMapping("/appointments/schedule/{id}")
@@ -61,6 +74,31 @@ public class AppointmentController {
             appointmentRepository.save(appointment);
         } catch (Exception e) {
             apiResponse.setMessage("Something went wrong");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        }
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/appointments/past/user/{id}")
+    public List<Appointment> getPsstAppointmentsByUser(@PathVariable(value = "id") int id) {
+        return appointmentRepository.findPastByUserId(id, currentTime);
+    }
+
+    @GetMapping("/appointments/active/user/{id}")
+    public List<Appointment> getActiveAppointmentsByUser(@PathVariable(value = "id") int id) {
+        return appointmentRepository.findActiveByUserId(id, currentTime);
+    }
+
+    @DeleteMapping("/appointments/{id}")
+    public ResponseEntity<?> deleteAppointment(@PathVariable(value = "id") int id) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        try{
+            appointmentRepository.deleteById(id);
+        }catch (Exception e) {
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
