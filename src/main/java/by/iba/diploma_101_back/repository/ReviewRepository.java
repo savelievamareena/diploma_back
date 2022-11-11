@@ -14,4 +14,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query(value = "SELECT * FROM review r LEFT JOIN doctor d on r.doctorId = d.id LEFT JOIN specialization s on d.specializationId = s.id WHERE r.isShown = ?1", nativeQuery = true)
     List<Review> findByIsShown(boolean shown);
 
+    @Query(value = "SELECT * FROM review r WHERE r.isShown = ?1 AND r.doctorId = ?2", nativeQuery = true)
+    List<Review> findShownByDoctor(boolean shown, int doctorId);
 }

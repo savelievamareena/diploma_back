@@ -35,7 +35,7 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors/{id}")
-    public Optional<Doctor> getAllDoctors(@PathVariable(value = "id") int id) {
+    public Optional<Doctor> getDoctor(@PathVariable(value = "id") int id) {
         return doctorRepository.findById(id);
     }
 

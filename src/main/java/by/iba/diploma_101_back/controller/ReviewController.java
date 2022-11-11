@@ -92,7 +92,13 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews")
-    public List<Review> getApprovedReviews() {
+    public List<Review> getApproved() {
         return reviewRepository.findByIsShown(true);
     }
+
+    @GetMapping("/reviews/doc/{id}")
+    public List<Review> getByDoctorApproved(@PathVariable(value = "id") int doctorId) {
+        return reviewRepository.findShownByDoctor(true, doctorId);
+    }
+
 }
