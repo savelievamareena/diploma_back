@@ -8,6 +8,7 @@ public class RegisterForm {
     String phoneNumber = "";
     String password = "";
     String confirmPassword = "";
+    boolean admin = false;
 
     public String getFirstName() {
         return firstName;
@@ -37,6 +38,10 @@ public class RegisterForm {
         return confirmPassword;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -63,5 +68,9 @@ public class RegisterForm {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

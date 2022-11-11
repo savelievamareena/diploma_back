@@ -112,7 +112,11 @@ public class AuthController {
         user.setFirstName(registerForm.getFirstName());
         user.setLastName(registerForm.getLastName());
         user.setPhoneNumber(registerForm.getPhoneNumber());
-        user.setRole("user");
+        if(registerForm.isAdmin()) {
+            user.setRole("admin");
+        }else {
+            user.setRole("user");
+        }
 
         String pass = registerForm.getPassword();
         String hashedPass = securePass(pass, hashingAlgorithm);

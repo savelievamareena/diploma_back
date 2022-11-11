@@ -25,6 +25,10 @@ public class ScheduleController {
     private final ScheduleRepository scheduleRepository;
     private final DoctorRepository doctorRepository;
 
+    java.util.Date dt = new java.util.Date();
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String currentTime = sdf.format(dt);
+
     @Autowired
     public ScheduleController(ScheduleRepository scheduleRepository, DoctorRepository doctorRepository) {
         this.scheduleRepository = scheduleRepository;
@@ -33,12 +37,12 @@ public class ScheduleController {
 
     @GetMapping("/schedules")
     public List<Schedule> getSchedules() {
-        return scheduleRepository.findAllOrdered();
+        return scheduleRepository.findAllActiveOrdered(currentTime);
     }
 
     @GetMapping("/schedules/doc/{id}")
     public List<Schedule> getSchedulesByDoctorId(@PathVariable(value = "id") int doctorId) {
-        return scheduleRepository.findAllByDoc(doctorId);
+        return scheduleRepository.findAllActiveByDoc(doctorId, currentTime);
     }
 
     @PostMapping("/schedules")

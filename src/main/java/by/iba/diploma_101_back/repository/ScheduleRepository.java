@@ -12,13 +12,13 @@ import java.util.List;
 @Transactional
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query(value = "" +
-            "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id LEFT JOIN specialization sp on d.specializationId = sp.id ORDER BY s.startTime",
+            "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id " +
+            "LEFT JOIN specialization sp on d.specializationId = sp.id WHERE s.endTime >= ?1 ORDER BY s.startTime",
             nativeQuery = true)
-    List<Schedule> findAllOrdered();
+    List<Schedule> findAllActiveOrdered(String currentTime);
 
-    @Query(value = "" +
-            "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id WHERE d.id = ?1 ORDER BY s.startTime",
+    @Query(value = "SELECT * FROM schedule s LEFT JOIN doctor d on s.doctorId = d.id WHERE d.id = ?1 AND s.startTime > ?2 ORDER BY s.startTime",
             nativeQuery = true)
-    List<Schedule> findAllByDoc(int doctorId);
+    List<Schedule> findAllActiveByDoc(int doctorId, String currentTime);
 
 }
