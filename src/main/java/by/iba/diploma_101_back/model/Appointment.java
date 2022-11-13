@@ -32,6 +32,9 @@ public class Appointment extends DataObject{
     @Column(name = "beginning")
     private String beginning;
 
+    @OneToOne(mappedBy = "appointment")
+    private Report report;
+
     public User getUser() {
         return user;
     }
