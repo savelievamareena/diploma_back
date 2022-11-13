@@ -3,6 +3,7 @@ package by.iba.diploma_101_back.controller;
 import by.iba.diploma_101_back.forms.LoginForm;
 import by.iba.diploma_101_back.forms.RegisterForm;
 import by.iba.diploma_101_back.helpers.ApiResponse;
+import by.iba.diploma_101_back.helpers.Security;
 import by.iba.diploma_101_back.model.User;
 import by.iba.diploma_101_back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
@@ -22,9 +20,8 @@ import java.util.Objects;
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
-    String hashingAlgorithm = "MD5";
-
     private final UserRepository userRepository;
+
     @Autowired
     public AuthController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -32,13 +29,6 @@ public class AuthController {
 
     public User getUserByEmail(String userIEmail) {
         return userRepository.findByEmail(userIEmail);
-    }
-
-    private static String securePass(String password, String hashingAlgorithm) throws NoSuchAlgorithmException {
-        byte[] bytesOfMessage = password.getBytes(StandardCharsets.UTF_8);
-        MessageDigest md = MessageDigest.getInstance(hashingAlgorithm);
-        byte[] theMD5digest = md.digest(bytesOfMessage);
-        return DatatypeConverter.printHexBinary(theMD5digest);
     }
 
     private static void setCookies(User user, String hashedPass, HttpServletResponse response) {
@@ -65,7 +55,7 @@ public class AuthController {
         User user = this.getUserByEmail(loginForm.getEmail());
         if(user != null) {
             String pass = loginForm.getPassword();
-            String hashedPass = securePass(pass, hashingAlgorithm);
+            String hashedPass = Security.securePass(pass);
 
             if(Objects.equals(user.getPassword(), hashedPass)) {
                 setCookies(user, hashedPass, response);
@@ -119,7 +109,7 @@ public class AuthController {
         }
 
         String pass = registerForm.getPassword();
-        String hashedPass = securePass(pass, hashingAlgorithm);
+        String hashedPass = Security.securePass(pass);
         user.setPassword(hashedPass);
 
         try {

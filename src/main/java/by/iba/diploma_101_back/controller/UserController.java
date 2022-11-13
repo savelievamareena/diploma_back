@@ -3,6 +3,7 @@ package by.iba.diploma_101_back.controller;
 import by.iba.diploma_101_back.exception.ResourceNotFoundException;
 import by.iba.diploma_101_back.forms.RegisterForm;
 import by.iba.diploma_101_back.helpers.ApiResponse;
+import by.iba.diploma_101_back.helpers.Security;
 import by.iba.diploma_101_back.model.User;
 import by.iba.diploma_101_back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable(value = "id") int userId, @RequestBody RegisterForm userDetails, HttpServletResponse response) {
+    public ResponseEntity<?> updateUser(@PathVariable(value = "id") int userId, @RequestBody RegisterForm userDetails, HttpServletResponse response) throws NoSuchAlgorithmException {
         ApiResponse apiResponse = new ApiResponse();
 
         User user = userRepository.findById(userId)
@@ -56,6 +58,10 @@ public class UserController {
         user.setLastName(userDetails.getLastName());
         user.setPhoneNumber(userDetails.getPhoneNumber());
         user.setDateOfBirth(userDetails.getDateOfBirth());
+
+        String pass = userDetails.getPassword();
+        String hashedPass = Security.securePass(pass);
+        user.setPassword(hashedPass);
 
         try {
             userRepository.save(user);
@@ -80,7 +86,6 @@ public class UserController {
 
     @GetMapping("/users/email")
     public User getUserByEmail(@RequestBody Map<String, String> body) {
-        User result = userRepository.findByEmail(body.get("email"));
-        return result;
+        return userRepository.findByEmail(body.get("email"));
     }
 }
