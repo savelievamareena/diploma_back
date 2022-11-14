@@ -13,4 +13,6 @@ import java.util.List;
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "SELECT * FROM doctor d LEFT JOIN specialization s on d.specializationId = s.id WHERE s.id = ?1 AND d.isAvailable = 1", nativeQuery = true)
     List<Doctor> findBySpecializationId(int specializationId);
+
+    Doctor findByLastName(String s);
 }
