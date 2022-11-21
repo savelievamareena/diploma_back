@@ -40,9 +40,9 @@ public class AppointmentEntityRepositoryTest {
 
 
     @Test
-    public void getAppointmentByIdTest(){ // поиск по id
-        Appointment appointment = appointmentRepository.findById(1).get();
-        assertEquals("09:40", appointment.getBeginning());
+    public void getAppointmentByIdTest(){
+        Appointment appointment = appointmentRepository.findAllBySchedule(11).get(0);
+        assertEquals("08:00", appointment.getBeginning());
     }
 
     @Test

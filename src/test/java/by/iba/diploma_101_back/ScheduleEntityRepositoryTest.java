@@ -40,9 +40,4 @@ public class ScheduleEntityRepositoryTest {
         Schedule schedule = new Schedule(doctor, "2022-12-24", "2022-12-24 09:30:00", "2022-12-24 13:30:00");
         assertNotNull(scheduleRepository.save(schedule));
     }
-
-
-
-
-
 }
