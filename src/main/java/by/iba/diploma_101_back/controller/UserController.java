@@ -66,7 +66,7 @@ public class UserController {
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            apiResponse.setMessage("Something went wrong");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);

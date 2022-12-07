@@ -43,7 +43,7 @@ public class CallBackController {
         try{
             callBackRepository.save(callRequest);
         }catch (Exception e) {
-            apiResponse.setMessage("Error. Try again later");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -61,7 +61,7 @@ public class CallBackController {
         try{
             callBackRepository.delete(callBackRequest);
         }catch (Exception e) {
-            apiResponse.setMessage("Error. Try again later");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);

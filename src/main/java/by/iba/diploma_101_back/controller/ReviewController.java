@@ -48,7 +48,7 @@ public class ReviewController {
         try {
             reviewRepository.save(review);
         }catch (Exception e) {
-            apiResponse.setMessage("Something went wrong");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -64,7 +64,7 @@ public class ReviewController {
         try{
             reviewRepository.deleteById(id);
         }catch (Exception e) {
-            apiResponse.setMessage("Error. Try again later");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -83,7 +83,7 @@ public class ReviewController {
         try{
             reviewRepository.save(review);
         }catch (Exception e) {
-            apiResponse.setMessage("Could not save");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -100,5 +100,4 @@ public class ReviewController {
     public List<Review> getByDoctorApproved(@PathVariable(value = "id") int doctorId) {
         return reviewRepository.findShownByDoctor(true, doctorId);
     }
-
 }

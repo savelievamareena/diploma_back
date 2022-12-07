@@ -71,7 +71,7 @@ public class AppointmentController {
         try {
             appointmentRepository.save(appointment);
         } catch (Exception e) {
-            apiResponse.setMessage("Something went wrong");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -80,7 +80,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/appointments/past/user/{id}")
-    public List<Appointment> getPsstAppointmentsByUser(@PathVariable(value = "id") int id) {
+    public List<Appointment> getPastAppointmentsByUser(@PathVariable(value = "id") int id) {
         return appointmentRepository.findPastByUserId(id, currentTime);
     }
 
@@ -96,7 +96,7 @@ public class AppointmentController {
         try{
             appointmentRepository.deleteById(id);
         }catch (Exception e) {
-            apiResponse.setMessage("Ошибка, попробуйте позже");
+            apiResponse.setMessage("Ошибка сохранения");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);

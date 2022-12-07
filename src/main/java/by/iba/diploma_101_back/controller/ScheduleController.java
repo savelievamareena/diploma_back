@@ -73,7 +73,7 @@ public class ScheduleController {
         try {
             scheduleRepository.save(schedule);
         }catch (Exception e) {
-            apiResponse.setMessage("Something went wrong");
+            apiResponse.setMessage("Ошибка, попробуйте позже");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -89,7 +89,7 @@ public class ScheduleController {
         try{
             scheduleRepository.deleteById(id);
         }catch (Exception e) {
-            apiResponse.setMessage("Error happened.");
+            apiResponse.setMessage("Ошибка, попробуйте позже.");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);

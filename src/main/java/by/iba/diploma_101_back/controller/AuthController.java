@@ -83,14 +83,14 @@ public class AuthController {
         ApiResponse apiResponse = new ApiResponse();
 
         if(!Objects.equals(registerForm.getPassword(), registerForm.getConfirmPassword())) {
-            apiResponse.setMessage("Passwords do not match");
+            apiResponse.setMessage("Пароли не совпадают");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
         }
 
         if(this.getUserByEmail(registerForm.getEmail()) != null) {
-            apiResponse.setMessage("User already exists");
+            apiResponse.setMessage("Пользователь уже существует");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -115,7 +115,7 @@ public class AuthController {
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            apiResponse.setMessage("Error");
+            apiResponse.setMessage("Ошибка");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
