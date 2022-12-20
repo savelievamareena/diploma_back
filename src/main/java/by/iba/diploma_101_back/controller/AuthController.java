@@ -63,13 +63,13 @@ public class AuthController {
                 apiResponse.setCookie(hashedPass);
                 apiResponse.setRole(user.getRole());
             }else {
-                apiResponse.setMessage("Wrong Password");
+                apiResponse.setMessage("Неверный пароль");
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(apiResponse);
             }
         }else {
-            apiResponse.setMessage("No User");
+            apiResponse.setMessage("Пользователь не существует");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(apiResponse);
@@ -150,7 +150,7 @@ public class AuthController {
             response.addCookie(idCookie);
 
         } catch (Exception e) {
-            apiResponse.setMessage("Error");
+            apiResponse.setMessage("Ошибка");
         }
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

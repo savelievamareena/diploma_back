@@ -59,9 +59,11 @@ public class UserController {
         user.setPhoneNumber(userDetails.getPhoneNumber());
         user.setDateOfBirth(userDetails.getDateOfBirth());
 
-        String pass = userDetails.getPassword();
-        String hashedPass = Security.securePass(pass);
-        user.setPassword(hashedPass);
+        if(!Objects.equals(userDetails.getPassword(), "")) {
+            String pass = userDetails.getPassword();
+            String hashedPass = Security.securePass(pass);
+            user.setPassword(hashedPass);
+        }
 
         try {
             userRepository.save(user);
