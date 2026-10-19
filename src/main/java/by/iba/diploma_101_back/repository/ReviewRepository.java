@@ -1,19 +1,18 @@
 package by.iba.diploma_101_back.repository;
 
 import by.iba.diploma_101_back.model.Review;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository
-@Transactional
+@Transactional(readOnly = true)
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
-    @Query(value = "SELECT * FROM review r LEFT JOIN doctor d on r.doctorId = d.id LEFT JOIN specialization s on d.specializationId = s.id WHERE r.isShown = ?1", nativeQuery = true)
-    List<Review> findByIsShown(boolean shown);
+    @EntityGraph(attributePaths = {"doctor", "doctor.specialization"})
+    List<Review> findByShown(boolean shown);
 
-    @Query(value = "SELECT * FROM review r WHERE r.isShown = ?1 AND r.doctorId = ?2", nativeQuery = true)
+    @Query(value = "SELECT r FROM Review r WHERE r.shown = ?1 AND r.doctor.id = ?2")
     List<Review> findShownByDoctor(boolean shown, int doctorId);
 }
