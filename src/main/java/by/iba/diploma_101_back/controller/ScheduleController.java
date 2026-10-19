@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +24,11 @@ import java.util.Optional;
 @RequestMapping(value = "/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ScheduleController {
+
+    private static final DateTimeFormatter DB_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private final ScheduleRepository scheduleRepository;
     private final DoctorRepository doctorRepository;
-
-    java.util.Date dt = new java.util.Date();
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String currentTime = sdf.format(dt);
 
     @Autowired
     public ScheduleController(ScheduleRepository scheduleRepository, DoctorRepository doctorRepository) {
@@ -37,12 +38,16 @@ public class ScheduleController {
 
     @GetMapping("/schedules")
     public List<Schedule> getSchedules() {
-        return scheduleRepository.findAllActiveOrdered(currentTime);
+        String now = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return scheduleRepository.findAllActiveOrdered(now);
     }
 
     @GetMapping("/schedules/doc/{id}")
     public List<Schedule> getSchedulesByDoctorId(@PathVariable(value = "id") int doctorId) {
-        return scheduleRepository.findAllActiveByDoc(doctorId, currentTime);
+        String now = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return scheduleRepository.findAllActiveByDoc(doctorId, now);
     }
 
     @PostMapping("/schedules")
@@ -56,13 +61,12 @@ public class ScheduleController {
                     .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", scheduleForm.getId()));
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        Date startParsed = formatter.parse(scheduleForm.getStartTime());
-        Date endParsed = formatter.parse(scheduleForm.getEndTime());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String startPrepared = sdf.format(startParsed);
-        String endPrepared = sdf.format(endParsed);
+        String startPrepared = OffsetDateTime.parse(scheduleForm.getStartTime())
+                .atZoneSameInstant(ZoneId.systemDefault())
+                .format(DB_FORMAT);
+        String endPrepared = OffsetDateTime.parse(scheduleForm.getEndTime())
+                .atZoneSameInstant(ZoneId.systemDefault())
+                .format(DB_FORMAT);
 
         Optional<Doctor> doctor = doctorRepository.findById(scheduleForm.getDoctorId());
         doctor.ifPresent(schedule::setDoctor);
