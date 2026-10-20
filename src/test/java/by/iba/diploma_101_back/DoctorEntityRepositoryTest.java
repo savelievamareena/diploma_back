@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -44,13 +46,16 @@ public class DoctorEntityRepositoryTest {
 
     @Test
     public void editDoctorTest() {
-        Doctor doctor = doctorRepository.findByLastName("Сорокина");
+        List<Doctor> doctors = doctorRepository.findByLastName("Сорокина");
+        assertEquals(1, doctors.size());
+
+        Doctor doctor = doctors.get(0);
         assertEquals("РГГУ", doctor.getEducation());
 
         doctor.setYearsOfExperience(8);
         doctorRepository.save(doctor);
 
-        Doctor doctorUpdated = doctorRepository.findByLastName("Сорокина");
+        Doctor doctorUpdated = doctorRepository.findById(doctor.getId()).orElseThrow();
         assertEquals(8, doctorUpdated.getYearsOfExperience());
     }
 }

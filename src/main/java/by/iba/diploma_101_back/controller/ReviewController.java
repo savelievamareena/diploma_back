@@ -30,7 +30,7 @@ public class ReviewController {
 
     @GetMapping("/admin/reviews")
     public List<Review> getReviewsToModerate() {
-        return reviewRepository.findByIsShown(false);
+        return reviewRepository.findByShown(false);
     }
 
     @PostMapping("/reviews")
@@ -93,7 +93,7 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public List<Review> getApproved() {
-        return reviewRepository.findByIsShown(true);
+        return reviewRepository.findByShown(true);
     }
 
     @GetMapping("/reviews/doc/{id}")
