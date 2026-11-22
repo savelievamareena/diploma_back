@@ -15,8 +15,8 @@ public class ReportService {
         this.reportRepository = reportRepository;
     }
 
-    public Report saveReport(Report report) {
-        return reportRepository.save(report);
+    public void saveReport(Report report) {
+        reportRepository.save(report);
     }
 
     public Report findReportById(int id) {
