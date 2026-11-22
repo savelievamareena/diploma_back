@@ -9,22 +9,20 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    @Query(value = "SELECT * FROM appointment a JOIN schedule s on a.scheduleId = s.id WHERE s.id = ?1", nativeQuery = true)
+    @Query(value = "SELECT a FROM Appointment a WHERE a.schedule.id = ?1")
     List<Appointment> findAllBySchedule(int scheduleId);
 
     //for user
-
-    @Query(value = "SELECT * FROM appointment a JOIN schedule s on a.scheduleId = s.id WHERE a.userId = ?1 AND s.scheduleDate < ?2 ORDER BY s.startTime", nativeQuery = true)
+    @Query(value = "SELECT a FROM Appointment WHERE a.userId = ?1 AND a.schedule.scheduleDate < ?2 ORDER BY a.schedule.startTime")
     List<Appointment> findPastByUserId(int userId, String currentTime);
 
-    @Query(value = "SELECT * FROM appointment a JOIN schedule s on a.scheduleId = s.id WHERE a.userId = ?1 AND s.scheduleDate >= ?2 ORDER BY s.startTime", nativeQuery = true)
+    @Query(value = "SELECT a FROM Appointment WHERE a.userId = ?1 AND a.schedule.scheduleDate >= ?2 ORDER BY a.schedule.startTime")
     List<Appointment> findActiveByUserId(int userId, String currentTime);
 
     //for admin
-
-    @Query(value = "SELECT * FROM appointment a JOIN schedule s on a.scheduleId = s.id WHERE s.scheduleDate < ?1 ORDER BY s.startTime DESC", nativeQuery = true)
+    @Query(value = "SELECT a FROM Appointment WHERE a.schedule.scheduleDate < ?1 ORDER BY a.schedule.startTime DESC")
     List<Appointment> getAllPast(String today);
 
-    @Query(value = "SELECT * FROM appointment a JOIN schedule s on a.scheduleId = s.id WHERE s.scheduleDate >= ?1 ORDER BY s.startTime DESC", nativeQuery = true)
+    @Query(value = "SELECT a FROM Appointment WHERE a.schedule.scheduleDate >= ?1 ORDER BY a.schedule.startTime DESC")
     List<Appointment> getAllActive(String today);
 }
