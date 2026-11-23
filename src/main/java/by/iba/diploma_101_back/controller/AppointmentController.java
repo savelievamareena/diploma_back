@@ -7,16 +7,16 @@ import by.iba.diploma_101_back.repository.AppointmentRepository;
 import by.iba.diploma_101_back.repository.ScheduleRepository;
 import by.iba.diploma_101_back.repository.ServiceRepository;
 import by.iba.diploma_101_back.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AppointmentController {
@@ -28,14 +28,6 @@ public class AppointmentController {
     java.util.Date dt = new java.util.Date();
     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
     String currentTime = sdf.format(dt);
-
-    @Autowired
-    public AppointmentController(AppointmentRepository appointmentRepository, UserRepository userRepository, ScheduleRepository scheduleRepository, ServiceRepository serviceRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.userRepository = userRepository;
-        this.scheduleRepository = scheduleRepository;
-        this.serviceRepository = serviceRepository;
-    }
 
     @GetMapping("/appointments/past")
     public List<Appointment> getAllPast() {
@@ -53,7 +45,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/appointments")
-    public ResponseEntity<?> createAppointment(@RequestBody AppointmentForm appointmentForm, HttpServletResponse response) {
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentForm appointmentForm) {
         ApiResponse apiResponse = new ApiResponse();
         Appointment appointment = new Appointment();
 

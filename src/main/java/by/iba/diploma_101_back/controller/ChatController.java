@@ -4,7 +4,7 @@ import by.iba.diploma_101_back.DTO.ChatMessageDTO;
 import by.iba.diploma_101_back.config.ChatHandshakeInterceptor;
 import by.iba.diploma_101_back.forms.ChatMessageForm;
 import by.iba.diploma_101_back.service.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -15,16 +15,11 @@ import java.util.Map;
 import java.util.Objects;
 
 // сообщения, которые приходят по WebSocket, а не обычными HTTP-запросами
+@RequiredArgsConstructor
 @Controller
 public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate messagingTemplate;
-
-    @Autowired
-    public ChatController(ChatService chatService, SimpMessagingTemplate messagingTemplate) {
-        this.chatService = chatService;
-        this.messagingTemplate = messagingTemplate;
-    }
 
     // клиент отправляет на /app/chat/{patientId}: сохранить и разослать
     @MessageMapping("/chat/{patientId}")

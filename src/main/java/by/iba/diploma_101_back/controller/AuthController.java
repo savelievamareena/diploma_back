@@ -6,7 +6,7 @@ import by.iba.diploma_101_back.helpers.ApiResponse;
 import by.iba.diploma_101_back.helpers.Security;
 import by.iba.diploma_101_back.model.User;
 import by.iba.diploma_101_back.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +17,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
     private final UserRepository userRepository;
-
-    @Autowired
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User getUserByEmail(String userIEmail) {
         return userRepository.findByEmail(userIEmail);

@@ -5,25 +5,20 @@ import by.iba.diploma_101_back.forms.CallBackForm;
 import by.iba.diploma_101_back.helpers.ApiResponse;
 import by.iba.diploma_101_back.model.CallRequest;
 import by.iba.diploma_101_back.repository.CallBackRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class CallBackController {
     private final CallBackRepository callBackRepository;
-
-    @Autowired
-    public CallBackController(CallBackRepository callBackRepository) {
-        this.callBackRepository = callBackRepository;
-    }
 
     @GetMapping("/callback")
     public List<CallRequest> getAllUsers() {
@@ -31,7 +26,7 @@ public class CallBackController {
     }
 
     @PostMapping("/callback")
-    public ResponseEntity<?> updateUser(@RequestBody CallBackForm callBackForm, HttpServletResponse response) {
+    public ResponseEntity<?> updateUser(@RequestBody CallBackForm callBackForm) {
         ApiResponse apiResponse = new ApiResponse();
 
         CallRequest callRequest = new CallRequest();

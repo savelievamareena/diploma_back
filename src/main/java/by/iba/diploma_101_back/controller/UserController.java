@@ -6,27 +6,22 @@ import by.iba.diploma_101_back.helpers.ApiResponse;
 import by.iba.diploma_101_back.helpers.Security;
 import by.iba.diploma_101_back.model.User;
 import by.iba.diploma_101_back.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -44,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable(value = "id") int userId, @RequestBody RegisterForm userDetails, HttpServletResponse response) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> updateUser(@PathVariable(value = "id") int userId, @RequestBody RegisterForm userDetails) throws NoSuchAlgorithmException {
         ApiResponse apiResponse = new ApiResponse();
 
         User user = userRepository.findById(userId)

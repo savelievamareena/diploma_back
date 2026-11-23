@@ -7,27 +7,21 @@ import by.iba.diploma_101_back.model.Doctor;
 import by.iba.diploma_101_back.model.Specialization;
 import by.iba.diploma_101_back.repository.DoctorRepository;
 import by.iba.diploma_101_back.repository.SpecializationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class DoctorController {
     private final DoctorRepository doctorRepository;
     private final SpecializationRepository specializationRepository;
-
-    @Autowired
-    public DoctorController(DoctorRepository doctorRepository, SpecializationRepository specializationRepository) {
-        this.doctorRepository = doctorRepository;
-        this.specializationRepository = specializationRepository;
-    }
 
     @GetMapping("/doctors")
     public List<Doctor> getAllDoctors() {
@@ -45,7 +39,7 @@ public class DoctorController {
     }
 
     @PostMapping("/doctors/{id}")
-    public ResponseEntity<?> updateDoctor(@PathVariable(value = "id") int doctorId, @RequestBody DoctorForm doctorDetails, HttpServletResponse response) {
+    public ResponseEntity<?> updateDoctor(@PathVariable(value = "id") int doctorId, @RequestBody DoctorForm doctorDetails) {
         ApiResponse apiResponse = new ApiResponse();
 
         Doctor doctor = new Doctor();

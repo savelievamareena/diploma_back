@@ -7,12 +7,11 @@ import by.iba.diploma_101_back.model.Doctor;
 import by.iba.diploma_101_back.model.Schedule;
 import by.iba.diploma_101_back.repository.DoctorRepository;
 import by.iba.diploma_101_back.repository.ScheduleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -21,20 +20,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ScheduleController {
-
     private static final DateTimeFormatter DB_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final ScheduleRepository scheduleRepository;
     private final DoctorRepository doctorRepository;
-
-    @Autowired
-    public ScheduleController(ScheduleRepository scheduleRepository, DoctorRepository doctorRepository) {
-        this.scheduleRepository = scheduleRepository;
-        this.doctorRepository = doctorRepository;
-    }
 
     @GetMapping("/schedules")
     public List<Schedule> getSchedules() {
@@ -51,7 +44,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedules")
-    public ResponseEntity<?> createSchedule(@RequestBody ScheduleForm scheduleForm) throws ParseException {
+    public ResponseEntity<?> createSchedule(@RequestBody ScheduleForm scheduleForm) {
         ApiResponse apiResponse = new ApiResponse();
 
         Schedule schedule = new Schedule();

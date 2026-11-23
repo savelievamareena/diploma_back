@@ -6,30 +6,23 @@ import by.iba.diploma_101_back.model.Appointment;
 import by.iba.diploma_101_back.model.Report;
 import by.iba.diploma_101_back.service.AppointmentService;
 import by.iba.diploma_101_back.service.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ReportController {
-
     private final ReportService reportService;
     private final AppointmentService appointmentService;
 
-    @Autowired
-    public ReportController(ReportService reportService, AppointmentService appointmentService) {
-        this.reportService = reportService;
-        this.appointmentService = appointmentService;
-    }
-
     @PostMapping("/report/{id}")
-    public ResponseEntity<?> saveReport(@PathVariable(value = "id") int id, @RequestBody ReportForm reportForm, HttpServletResponse response) {
+    public ResponseEntity<?> saveReport(@PathVariable(value = "id") int id, @RequestBody ReportForm reportForm) {
         ApiResponse apiResponse = new ApiResponse();
         Report report = new Report();
 
